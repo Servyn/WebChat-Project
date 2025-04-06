@@ -1,4 +1,4 @@
-// import "@/styles/globals.css";
+import "@/styles/globals.css";
 import '@/styles/chat.css';
 
 export default function App({ Component, pageProps }) {
