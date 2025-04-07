@@ -1,4 +1,4 @@
-const User = require("../models/User"); // Giả sử bạn có mô hình User trong MongoDB
+const User = require("../models/User");
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
@@ -7,18 +7,17 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ success: false, message: "User not found" });
+      return res.status(400).json({ success: false, message: "Sai ten dang nhap" });
     }
 
     if (user.password !== password) {
-      return res.status(400).json({ success: false, message: "Incorrect password" });
+      return res.status(400).json({ success: false, message: "Sai pass" });
     }
 
-    // Trả về thông tin người dùng khi đăng nhập thành công
     return res.status(200).json({
       success: true,
       username: user.username,
-      message: "Login successful",
+      message: "dang nhap thanh cong",
     });
   } catch (err) {
     console.error("Error during login:", err);

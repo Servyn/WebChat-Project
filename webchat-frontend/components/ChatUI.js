@@ -3,6 +3,7 @@ import EmojiPicker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import SendIcon from "@mui/icons-material/Send";
 
+
 export default function ChatUI({
   username,
   handleLogout,
@@ -12,6 +13,7 @@ export default function ChatUI({
   showPicker, setShowPicker,
   roomInput, setRoomInput,
   handleJoinRoom,
+  currentRoom,
   sendMessage,
   users
 }) {
@@ -21,13 +23,15 @@ export default function ChatUI({
       {/* Header */}
       <AppBar position="static">
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant="h6">Web Chat Real-Time</Typography>
+          <Typography variant="h6">Webchat</Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Typography>Phòng: <strong>{currentRoom || "Phòng chung"}</strong></Typography>
             <Typography>{username}</Typography>
             <Button color="inherit" onClick={handleLogout}>Đăng xuất</Button>
           </Box>
         </Toolbar>
       </AppBar>
+
 
       {/* Main Content */}
       <Box sx={{ display: 'flex', flex: 1 }}>

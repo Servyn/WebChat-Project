@@ -23,9 +23,9 @@ export default function LoginPage() {
         return;
       }
 
-      // ✅ Đăng nhập thành công
+
       localStorage.setItem("username", data.username);
-      router.push("/chat"); // chuyển đến trang chat
+      router.push("/chat"); 
     } catch (err) {
       setError("Lỗi kết nối server");
     }

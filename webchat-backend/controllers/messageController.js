@@ -1,7 +1,6 @@
 
 exports.uploadImage = async (req, res) => {
   try {
-    console.log("Uploaded file:", req.file);
 
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });

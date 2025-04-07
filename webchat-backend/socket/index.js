@@ -4,7 +4,6 @@ const usersInRoom = {};
 
 module.exports = function (io) {
   io.on("connection", (socket) => {
-    console.log("User connected:", socket.id);
 
     socket.on("joinRoom", (room, username) => {
       const currentRooms = Array.from(socket.rooms);
@@ -39,12 +38,10 @@ module.exports = function (io) {
     });
 
     socket.on("chatMessage", async (messageData) => {
-      console.log("📥 chatMessage received:", messageData);
       try {
         const { text, sender, room, image } = messageData;
 
         if ((!text || text.trim() === "") && !image) {
-          console.log("Message must have text or image.");
           return;
         }
         
@@ -56,11 +53,11 @@ module.exports = function (io) {
           room,
           timestamp: new Date(),
         });
-        console.log("✅ newMessage created:", newMessage);
+        console.log("tin nhan:", newMessage);
 
         await newMessage.save();
         
-        io.to(room).emit("chatMessage", newMessage); // Emit tin nhắn mới cho phòng
+        io.to(room).emit("chatMessage", newMessage); 
 
 
       } catch (err) {

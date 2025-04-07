@@ -1,15 +1,21 @@
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useChat from "@/hooks/useChat";
+import { useEffect, useState } from "react";
 import ChatUI from "@/components/ChatUI";
+
+
 
 export default function ChatPage() {
   const router = useRouter();
+  const [username, setUsername] = useState(null);
+  const chat = useChat();
 
   useEffect(() => {
-    const username = localStorage.getItem("username");
-    if (!username) {
+    const storedUsername = localStorage.getItem("username");
+    if (!storedUsername) {
       router.push("/login");
+    } else {
+      setUsername(storedUsername);
     }
   }, []);
 
@@ -18,13 +24,15 @@ export default function ChatPage() {
     router.push("/login");
   };
 
-  const chat = useChat();
+
+  if (!username) return null;
 
   return (
     <ChatUI
       {...chat}
-      username={localStorage.getItem("username")}
+      username={username}
       handleLogout={handleLogout}
+      currentRoom={chat.currentRoom}
     />
   );
 }

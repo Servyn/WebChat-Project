@@ -11,8 +11,9 @@ export default function useChat() {
   const [roomInput, setRoomInput] = useState("");
   const [users, setUsers] = useState([]);
   const previousRoom = useRef(null);
+  const [currentRoom, setCurrentRoom] = useState("");
 
-  // Khai báo username
+
   const username = typeof window !== "undefined" ? localStorage.getItem("username") : "";
 
   useEffect(() => {
@@ -21,7 +22,6 @@ export default function useChat() {
     });
 
     socket.on("chatMessage", (newMessage) => {
-      console.log("New message received:", newMessage);
       setMessages((prev) => [...prev, newMessage]);
     });
 
@@ -33,8 +33,7 @@ export default function useChat() {
       if (previousRoom.current && previousRoom.current !== room) {
         socket.emit("leaveRoom", previousRoom.current);
       }
-      console.log("Joining room", room, "as", username);
-      socket.emit("joinRoom", room, username);  // Gửi username vào khi join phòng
+      socket.emit("joinRoom", room, username); 
       previousRoom.current = room;
     }
 
@@ -47,13 +46,10 @@ export default function useChat() {
 
   const sendMessage = async () => {
     try {
-      console.log("Message before send:", message);  // Debug giá trị tin nhắn
-      console.log("Image before send:", image);  // Debug giá trị ảnh
       if (!message && !image) return;
 
       let imageUrl = null;
 
-      // 🧠 Chỉ upload khi có ảnh
       if (image) {
         const formData = new FormData();
         formData.append("text", message);
@@ -67,12 +63,9 @@ export default function useChat() {
         });
 
         const data = await response.json();
-        console.log("Image upload response:", data);
         imageUrl = data.imageUrl;
       }
 
-      // 🔥 Gửi tin nhắn sau khi ảnh upload (hoặc không cần ảnh)
-      console.log("Sending message:", { text: message, image: imageUrl, room });
       socket.emit("chatMessage", {
         text: message,
         image: imageUrl || "",
@@ -91,6 +84,7 @@ export default function useChat() {
   const handleJoinRoom = () => {
     if (roomInput) {
       setRoom(roomInput);
+      setCurrentRoom(roomInput);
       setRoomInput("");
     }
   };
@@ -103,6 +97,7 @@ export default function useChat() {
     roomInput, setRoomInput,
     handleJoinRoom,
     sendMessage,
-    users
+    users,
+    currentRoom
   };
 }
